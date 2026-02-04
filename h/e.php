@@ -9,4 +9,13 @@
 </head>
 
 <body>
-<h1>สุภัสสร ปาปะโน (แพท) </h1>
+<h1>e.php </h1>
+
+<?php
+
+   unset( $_SESSION['name']);
+   unset($_SESSION['p1']);
+ 
+?>
+</body>
+</html>
