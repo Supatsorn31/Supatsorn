@@ -16,23 +16,28 @@ Password <input type="password" name="apwd" required> <br>
 
 <?php
 if(isset($_POST['Submit'])){
-	include_once ("connectdb.php");
-	$sql = "SELECT* FROM admin WHERE a_username='{$_POST}['auser']}'AND a_password='{$_POST['apwd']}' LIMIT 1 ";
-	$rs = mysqli_query($conn,$sql);
-	$num = mysqli_num_rows($rs);
-	
-	if($num ==1){
-		$data =  mysqli_fetch_array($rs);
-		$_SESSION['aid'] = $data ['a_id'];
-		$_SESSION['aname'] = $data ['a_name'];
-		echo "<script>";
-		echo "window.location='index2.php';";
-		echo "</script>";
-	}else{
-		echo "<script>";
-		echo "alert('Username หรือ Password ไม่ถูกต้อง');";
-		echo "</script>";
-	}
+    include_once ("connectdb.php");
+    
+    $u = $_POST['auser'];
+    $p = $_POST['apwd'];
+
+    // 1. ค้นหาเฉพาะ Username ก่อน
+    $sql = "SELECT * FROM admin WHERE a_username='$u' LIMIT 1";
+    $rs = mysqli_query($conn, $sql);
+    $data = mysqli_fetch_array($rs);
+
+    // 2. ใช้ฟังก์ชัน password_verify ตรวจสอบรหัสผ่านที่พิมพ์มา กับตัวที่เข้ารหัสใน DB
+    if($data && password_verify($p, $data['a_password'])){
+        $_SESSION['aid'] = $data['a_id'];
+        $_SESSION['aname'] = $data['a_name'];
+        echo "<script>";
+        echo "window.location='index2.php';";
+        echo "</script>";
+    } else {
+        echo "<script>";
+        echo "alert('Username หรือ Password ไม่ถูกต้อง');";
+        echo "</script>";
+    }
 }
 ?>	
 </body>
