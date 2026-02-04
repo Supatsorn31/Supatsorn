@@ -19,7 +19,7 @@ if(isset($_POST['Submit'])){
 	include_once ("connectdb.php");
 	$sql = "SELECT* FROM admin WHERE a_username='{$_POST}['auser']}'AND a_password='{$_POST['apwd']}' LIMIT 1 ";
 	$rs = mysqli_query($conn,$sql);
-	$num = mysqli_num_rows($sr);
+	$num = mysqli_num_rows($rs);
 	
 	if($num ==1){
 		$data =  mysqli_fetch_array($rs);
