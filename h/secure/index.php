@@ -27,11 +27,11 @@ if(isset($_POST['Submit'])){
 		$_SESSION['aname'] = $data ['a_name'];
 		echo "<script>";
 		echo "window.location='index2.php';";
-		echo "<script>";
+		echo "</script>";
 	}else{
 		echo "<script>";
 		echo "alert('Username หรือ Password ไม่ถูกต้อง');";
-		echo "<script>";
+		echo "</script>";
 	}
 }
 ?>	
