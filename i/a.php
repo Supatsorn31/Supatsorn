@@ -16,12 +16,13 @@
 
 <?php
 if(isset($_POST['Submit'])){
-	include_once("connectdb.php");
-	$rname = $_POST['rname'];
-	$sql2 = "INSERT INTO  `regions`(`r_id`,`r_name`) VALUES(NULL,'{$rname}')";
-	mysqli_query($conn,$sql2) or die ("เพิ่มข้อมูลไม่ได้");
+    include_once("connectdb.php");
+    $rname = $_POST['rname'];
+    $sql2 = "INSERT INTO regions`(r_id`,`r_name`)  VALUES (NULL,'{$rname}')";
+    mysqli_query($conn,$sql2) or die("เพิ่มข้อมูลไม่ได้");
 }
 ?>
+
 
 <table border ="1">
  <tr>
