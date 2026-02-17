@@ -1,5 +1,5 @@
 <?php
-include_once("connectdb.php"); // นำไว้บนสุดเพื่อให้เรียกใช้ $conn ได้ทุกจุด
+include_once("connectdb.php"); // เชื่อมต่อฐานข้อมูล
 ?>
 <!doctype html>
 <html>
@@ -9,8 +9,8 @@ include_once("connectdb.php"); // นำไว้บนสุดเพื่อ�
     <style>
         body { font-family: Tahoma, sans-serif; padding: 20px; }
         table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { padding: 10px; text-align: center; }
-        img { border-radius: 5px; }
+        th, td { padding: 10px; text-align: center; border: 1px solid #ccc; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
     </style>
 </head>
 
@@ -25,11 +25,11 @@ include_once("connectdb.php"); // นำไว้บนสุดเพื่อ�
         <select name="rid" required>
             <option value="">-- เลือกภาค --</option>
             <?php
-            // ดึงข้อมูลภาคมาใส่ Dropdown
-            $sql_reg = "SELECT * FROM regions";
-            $rs_reg = mysqli_query($conn, $sql_reg);
-            while($row_reg = mysqli_fetch_array($rs_reg)){
-                echo "<option value='{$row_reg['r_id']}'>{$row_reg['r_name']}</option>";
+            // ดึงข้อมูลภาคมาใส่ Dropdown: แก้ไขตัวแปร $rs3 และ $data3
+            $sql3 = "SELECT * FROM regions";
+            $rs3 = mysqli_query($conn, $sql3);
+            while($data3 = mysqli_fetch_array($rs3)){
+                echo "<option value='{$data3['r_id']}'>{$data3['r_name']}</option>";
             }
             ?>      
         </select>
@@ -40,37 +40,35 @@ include_once("connectdb.php"); // นำไว้บนสุดเพื่อ�
     <br><hr><br>
 
     <?php
-    // ส่วนของการบันทึกข้อมูลเมื่อกดปุ่ม Submit
+    // ส่วนของการบันทึกข้อมูล
     if(isset($_POST['Submit'])){
         $pname = $_POST['pname'];
         $rid = $_POST['rid'];
         
-        // จัดการเรื่องนามสกุลไฟล์
-        $temp_file = $_FILES['pimage']['name'];
-        $ext = pathinfo($temp_file, PATHINFO_EXTENSION);
+        // รับนามสกุลไฟล์: แก้ไขชื่อ pimage ให้ตรงกับ input
+        $ext = pathinfo($_FILES['pimage']['name'], PATHINFO_EXTENSION);
         
-        // 1. เพิ่มข้อมูลลงฐานข้อมูลก่อน (เว้น ID ไว้เป็น NULL เพื่อให้ Auto Increment ทำงาน)
-        // หมายเหตุ: ตรวจสอบชื่อตาราง provices หรือ provinces ให้ดี
-        $sql_insert = "INSERT INTO provices (p_name, p_ext, r_id) VALUES ('{$pname}', '{$ext}', '{$rid}')";
+        // บันทึกข้อมูล (แก้ไขชื่อตารางเป็น provinces และนำเครื่องหมาย ' ออก)
+        $sql2 = "INSERT INTO provinces (p_name, p_ext, r_id) VALUES ('{$pname}', '{$ext}', '{$rid}')";
         
-        if(mysqli_query($conn, $sql_insert)){
-            // 2. ดึง ID ล่าสุดที่เพิ่ง Insert ไป เพื่อเอามาตั้งชื่อไฟล์รูป
-            $last_id = mysqli_insert_id($conn);
-            $filename = $last_id . "." . $ext;
+        if(mysqli_query($conn, $sql2)){
+            // ดึง ID ล่าสุดมาตั้งชื่อไฟล์
+            $pid = mysqli_insert_id($conn);
+            $filename = $pid . "." . $ext;
             
-            // 3. ย้ายไฟล์ไปที่โฟลเดอร์ images
+            // อัปโหลดไฟล์ไปที่โฟลเดอร์ images
             if(move_uploaded_file($_FILES['pimage']['tmp_name'], "images/".$filename)){
-                echo "<script>alert('บันทึกข้อมูลและอัปโหลดรูปสำเร็จ'); window.location='b.php';</script>";
+                echo "<script>alert('บันทึกสำเร็จ'); window.location='b.php';</script>";
             } else {
-                echo "อัปโหลดรูปภาพไม่สำเร็จ (ตรวจสอบโฟลเดอร์ images)";
+                echo "<p style='color:red;'>อัปโหลดรูปไม่สำเร็จ (ตรวจสอบโฟลเดอร์ images)</p>";
             }
         } else {
-            echo "เกิดข้อผิดพลาด: " . mysqli_error($conn);
+            echo "Error: " . mysqli_error($conn);
         }
     }
     ?>
 
-    <table border="1">
+    <table>
         <tr bgcolor="#eeeeee">
             <th>รหัสจังหวัด</th>
             <th>ชื่อจังหวัด</th>
@@ -79,15 +77,15 @@ include_once("connectdb.php"); // นำไว้บนสุดเพื่อ�
             <th>จัดการ</th>
         </tr>
         <?php
-        // Query แบบ Join เพื่อดึงชื่อภาคออกมาด้วย
-        $sql_show = "SELECT p.*, r.r_name 
-                     FROM provices AS p 
-                     INNER JOIN regions AS r ON p.r_id = r.r_id 
-                     ORDER BY p.p_id DESC";
-        $rs_show = mysqli_query($conn, $sql_show);
+        // Query แบบ Join (แก้ไขชื่อตาราง provinces และ regions)
+        $sql = "SELECT p.*, r.r_name 
+                FROM provinces AS p 
+                INNER JOIN regions AS r ON p.r_id = r.r_id 
+                ORDER BY p.p_id DESC";
+        $rs = mysqli_query($conn, $sql);
         
-        if($rs_show){
-            while($data = mysqli_fetch_array($rs_show)){
+        if($rs){
+            while($data = mysqli_fetch_array($rs)){
         ?>
         <tr>
             <td><?php echo $data['p_id']; ?></td>
@@ -95,23 +93,21 @@ include_once("connectdb.php"); // นำไว้บนสุดเพื่อ�
             <td><?php echo $data['r_name']; ?></td>
             <td>
                 <?php 
-                $img_path = "images/" . $data['p_id'] . "." . $data['p_ext'];
-                if(file_exists($img_path)){
-                    echo "<img src='$img_path' width='100'>";
+                $img_name = "images/" . $data['p_id'] . "." . $data['p_ext'];
+                if(file_exists($img_name)){
+                    echo "<img src='$img_name' width='100'>";
                 } else {
                     echo "ไม่มีรูป";
                 }
                 ?>
             </td>
             <td>
-                <a href="delete_provice.php?id=<?php echo $data['p_id']; ?>&ext=<?php echo $data['p_ext'] ; ?>" 
-                   onClick="return confirm('ยืนยันการลบข้อมูลนี้?');">
-                   ลบข้อมูล
-                </a>
+                <a href="delete_province.php?id=<?php echo $data['p_id']; ?>&ext=<?php echo $data['p_ext']; ?>" 
+                   onClick="return confirm('ยืนยันการลบ?');">ลบ</a>
             </td>
         </tr>
         <?php 
-            } 
+            }
         } 
         ?>
     </table>
