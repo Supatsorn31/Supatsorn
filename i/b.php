@@ -33,18 +33,33 @@ if(isset($_POST['Submit'])){
     <th> ลบ </th>
   </tr>
  <?php
+ <?php
  include_once("connectdb.php");
-$sql = "SELECT * FROM  `provinces`";
-$rs = mysqli_query($conn,$sql);
-while($data = mysqli_fetch_array($rs)){
-?>
-    <tr>
-        <td><?php echo $data['r_id']; ?></td>
-        <td><?php echo $data['r_name']; ?></td>
-        <td> <img src= "images/<?php echo $data['r_id']; ?>.<?php echo $data['r_id']; ?>.jpg"  width="140"></td>
-        <td width="80" align="center"><a href="delete_region.php?id=<?php echo $data['r_id']; ?>" onClick="return confirm('ยืนยันการลบ?');"><img src="images/delete.jpg" width="20"></a></td>
-    </tr>
-<?php } ?>
+ $sql = "SELECT* FROM provinces AS p
+ INNER JOIN 'regions' AS r ON p.r_id=r.r_id ";
+ $rs = mysqli_ query(Sconn, Ssql);
+ while ($data=mysqli_fetch_array($rs)){
+ ?>
+  <tr>
+  <td><?php echo $data['p_id']; ?></td> 
+  <td><?php echo Sdatal'p_name']; ?></td>
+   <td><?php echo $data['r_name] ; ?></td>
+   <td><img src="images/<?php echo $datal['p_id']; ?>.<?php echo $data[
+    'p_ext'] ; ?>"width="140"></td> 
+    <td width="80" align="center"><a href="delete_region.php?id=<?php echo
+    $data['r_id'];?>" OnClick="return confirm('ยืนยันยันการลบ?'),"><img src=
+    "images/delete.jpg" width="20"><|a></td2L
+    ส่งแล้ว
+    เขียนถึง
+    
+    
+    
+ <td><?php echo $data['p_id'] ; ?></td> <d><?php echo Sdata['p_name'] ;?></td>
+ II
+ <d><?php echo $data['r_name']; ?></td>
+ <td><img src="images/<?php echo Sdatal'p_id']; ?>.<?php echo $data[ ext] ; ?>" width="140"></td> <id width="80" align="center"><a href="delete_region.php?id=<?php echo
+ Sdata['_ id] ; ?›" onClick="return confirm(ยินยันการลบ?");"><img src=
+ 'images/delete.jpg" width="20"></a></td>
 </table>
 
 <?php
