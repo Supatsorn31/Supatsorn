@@ -2,32 +2,38 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title>งาน K สุภัสสร ปาปะโน (แพท)</title>
+    <title>งาน K สุภัสสร ปาปะโน 66010914038</title>
+
     <style>
         body {
             text-align: center;
             font-family: Arial, sans-serif;
             margin-top: 50px;
         }
+
         h1 {
             color: #333;
         }
+
         button {
-            padding: 15px 30px;
+            padding: 12px 25px;
             font-size: 16px;
             border: none;
             cursor: pointer;
             margin: 10px;
             border-radius: 8px;
         }
+
         .btn-green {
             background-color: green;
             color: white;
         }
-        .btn-orange {
+
+        .btn-yellow {
             background-color: orange;
             color: white;
         }
+
         img {
             margin-top: 20px;
             width: 300px;
@@ -35,20 +41,20 @@
         }
     </style>
 </head>
+
 <body>
 
-    <h1>งาน K  สุภัสสร ปาปะโน</h1>
+    <h1>งาน K สุภัสสร ปาปะโน 66010914038</h1>
     
 
-    <br>
-
     <button class="btn-green" onclick="showMyImage()">รูปของฉัน</button>
-    <button class="btn-orange" onclick="showTeacherImage()">รูปอาจารย์</button>
+    <button class="btn-yellow" onclick="showTeacherImage()">รูปอาจารย์</button>
 
     <br>
 
-    <img id="myImage" src="myphoto.jpg">
-    <img id="teacherImage" src="teacher.jpg">
+    <!-- รูป -->
+    <img id="myImage" src="myphoto.jpg" alt="รูปของฉัน">
+    <img id="teacherImage" src="teacher.jpg" alt="รูปอาจารย์">
 
     <script>
         function showMyImage() {
