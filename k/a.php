@@ -38,6 +38,9 @@
             margin-top: 20px;
             width: 300px;
             display: none;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
     </style>
 </head>
@@ -52,7 +55,6 @@
 
     <br>
 
-    <!-- รูป -->
     <img id="myImage" src="images/myphoto.jpg" alt="รูปของฉัน">
     <img id="teacherImage" src="images/teacher.jpg" alt="รูปอาจารย์">
 
