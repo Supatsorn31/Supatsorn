@@ -53,8 +53,8 @@
     <br>
 
     <!-- รูป -->
-    <img id="myImage" src="myphoto.jpg" alt="รูปของฉัน">
-    <img id="teacherImage" src="teacher.jpg" alt="รูปอาจารย์">
+    <img id="myImage" src="images/myphoto.jpg" alt="รูปของฉัน">
+    <img id="teacherImage" src="images/teacher.jpg" alt="รูปอาจารย์">
 
     <script>
         function showMyImage() {
