@@ -37,8 +37,7 @@
         img {
             margin-top: 20px;
             width: 300px;
-            display: none;
-            display: block;
+            display: none;   /* ซ่อนไว้ก่อน */
             margin-left: auto;
             margin-right: auto;
         }
